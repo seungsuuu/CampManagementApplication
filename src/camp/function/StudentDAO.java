@@ -24,23 +24,7 @@ public class StudentDAO {
         int count = 0;
 
         // 기능 구현 (필수 과목, 선택 과목)
-        System.out.println("\n수강생을 등록합니다...");
-        System.out.print("수강생 이름 입력: ");
-        studentName = sc.next();
 
-        System.out.print("\n수강생 상태 입력: ");
-        studentStatus = sc.next();
-
-        System.out.print("\n필수과목: " + Arrays.toString(mandatorySubjects) + "\n");
-        System.out.println("입력이 끝나면 end 를 입력하세요!");
-        System.out.print("\n수강생이 선택한 필수과목명 입력: ");
-        while (true) {
-            String temp = sc.next();
-            if (temp.equals("end")) {
-                break;
-            }
-            studentSubjects.add(temp);
-        }
         Student student = new Student(studentID, studentName, studentStatus, studentSubjects); // 수강생 인스턴스 생성 예시 코드
         // 기능 구현
         System.out.println("수강생 등록 성공!\n");
