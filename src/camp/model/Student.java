@@ -1,32 +1,32 @@
 package camp.model;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 public class Student {
     private String studentId; // 고유번호
     private String studentName; // 이름
     private String studentStatus; // 상태
-    private String[] studentSubjects = new String[9]; // 선택 과목 목록
+    private LinkedList<String> studentSubjects = new LinkedList<>(); // 선택 과목 목록
 
     // 생성자
     public Student() {
     }
 
-    public Student(String studentId, String studentName, String studentStatus, String[] studentSubjects) {
+    public Student(String studentId, String studentName, String studentStatus, LinkedList<String> studentSubjects) {
         this.studentId = studentId;
         this.studentName = studentName;
         this.studentStatus = studentStatus;
         this.studentSubjects = studentSubjects;
     }
 
-    // 출력 메소드
     @Override
     public String toString() {
         return "Student{" +
                 "studentId='" + studentId + '\'' +
                 ", studentName='" + studentName + '\'' +
                 ", studentStatus='" + studentStatus + '\'' +
-                ", studentSubjects=" + Arrays.toString(studentSubjects) +
+                ", studentSubjects=" + studentSubjects +
                 "}\n";
     }
 
@@ -43,7 +43,7 @@ public class Student {
         return studentStatus;
     }
 
-    public String[] getStudentSubjects() {
+    public LinkedList<String> getStudentSubjects() {
         return studentSubjects;
     }
 
@@ -60,7 +60,7 @@ public class Student {
         this.studentStatus = studentStatus;
     }
 
-    public void setStudentSubjects(String[] studentSubjects) {
+    public void setStudentSubjects(LinkedList<String> studentSubjects) {
         this.studentSubjects = studentSubjects;
     }
 }

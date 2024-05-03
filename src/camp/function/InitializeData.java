@@ -5,6 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -50,19 +51,19 @@ public class InitializeData {
                         sequence(INDEX_TYPE_STUDENT),
                         "여단",
                         "Green",
-                        new String[]{"Java", "객체지향", "Spring", "디자인 패턴", "Spring Security"}
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "디자인 패턴", "Spring Security"))
                 ),
                 new Student(
                         sequence(INDEX_TYPE_STUDENT),
                         "이단",
                         "Red",
-                        new String[]{"Java", "객체지향", "Spring", "JPA", "디자인 패턴", "Spring Security", "Redis"}
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "디자인 패턴", "Spring Security", "Redis"))
                 ),
                 new Student(
                         sequence(INDEX_TYPE_STUDENT),
                         "삼단",
                         "Yellow",
-                        new String[]{"Java", "객체지향", "Spring", "JPA", "MySQL", "디자인 패턴", "Spring Security", "Redis", "MongoDB"}
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL", "디자인 패턴", "Spring Security", "Redis", "MongoDB"))
                 )
         ).toList();
         subjectStore = List.of(
