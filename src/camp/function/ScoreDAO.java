@@ -28,7 +28,7 @@ public class ScoreDAO {
     }
 
     // 수강생의 특정 과목 회차별 등급 조회
-    public void inquireRoundGradeBySubject() {
+    public void inquireRoundRankBySubject() {
         String studentId = enterStudentId(); // 관리할 수강생 고유 번호
         // 기능 구현 (조회할 특정 과목)
         System.out.println("회차별 등급을 조회합니다...");
