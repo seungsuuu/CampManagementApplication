@@ -24,8 +24,8 @@ public class StudentDAO {
         LinkedList<String> choiceSubjects = new LinkedList<>(List.of("디자인 패턴", "Spring Security", "Redis", "MongoDB")); // 최소 3개 이상
         int countMandatory = 0;
         int countChoice = 0;
+        sc = new Scanner(System.in);
 
-        // 기능 구현 (필수 과목, 선택 과목)
         System.out.println("\n수강생을 등록합니다...");
         System.out.print("수강생 이름 입력: ");
         studentName = sc.nextLine();
@@ -40,7 +40,7 @@ public class StudentDAO {
         System.out.println();
         System.out.print("선택과목: ");
         for (int i = 0; i < choiceSubjects.size(); i++) {
-            System.out.print((i + mandatorySubjects.size()) + ". " + choiceSubjects.get(i) + " ");
+            System.out.print((i + mandatorySubjects.size() + 1) + ". " + choiceSubjects.get(i) + " ");
         }
         System.out.println();
         System.out.println("입력이 끝나면 end 를 입력하세요!");
@@ -52,23 +52,18 @@ public class StudentDAO {
                 break;
             }
             int index = Integer.parseInt(temp);
-            if(index > (mandatorySubjects.size() + choiceSubjects.size())) {
+            if (index > (mandatorySubjects.size() + choiceSubjects.size())) {
                 System.out.println("없는 과목입니다!");
                 createStudent();
-            }
-            if (index < mandatorySubjects.size()) {
-                studentSubjects.add(mandatorySubjects.get(index-1));
+            } else if (index < mandatorySubjects.size()) {
+                studentSubjects.add(mandatorySubjects.get(index - 1));
                 countMandatory++;
-            } else {
-                studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size()));
+            } else if (index > mandatorySubjects.size()) {
+                studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
                 countChoice++;
             }
         }
-        if (countMandatory < 3 || countChoice < 2) {
-            System.out.println("필수과목 3개 이상, 선택과목 2개 이상 입력해야 합니다!");
-            sc.nextLine();
-            createStudent();
-        }
+
 
         Student student = new Student(studentID, studentName, studentStatus, studentSubjects);
         initializeData.setStudentStore(student);
