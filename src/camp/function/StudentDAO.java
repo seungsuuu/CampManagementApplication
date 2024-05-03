@@ -1,11 +1,10 @@
 package camp.function;
 
+import camp.Exception.NotEnoughSubjectsException;
+import camp.Exception.SubjectOutOfBoundException;
 import camp.model.Student;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class StudentDAO {
     // 스캐너
@@ -24,6 +23,8 @@ public class StudentDAO {
         LinkedList<String> choiceSubjects = new LinkedList<>(List.of("디자인 패턴", "Spring Security", "Redis", "MongoDB")); // 최소 3개 이상
         int countMandatory = 0;
         int countChoice = 0;
+        boolean printData = true;
+        String input = " ";
         sc = new Scanner(System.in);
 
         System.out.println("\n수강생을 등록합니다...");
@@ -33,37 +34,62 @@ public class StudentDAO {
         System.out.print("수강생 상태 입력: ");
         studentStatus = sc.nextLine();
 
-        System.out.print("필수과목: ");
-        for (int i = 0; i < mandatorySubjects.size(); i++) {
-            System.out.print((i + 1) + ". " + mandatorySubjects.get(i) + " ");
-        }
-        System.out.println();
-        System.out.print("선택과목: ");
-        for (int i = 0; i < choiceSubjects.size(); i++) {
-            System.out.print((i + mandatorySubjects.size() + 1) + ". " + choiceSubjects.get(i) + " ");
-        }
-        System.out.println();
-        System.out.println("입력이 끝나면 end 를 입력하세요!");
-        System.out.print("수강생이 선택한 과목을 입력하세요: ");
-
         while (true) {
-            String temp = sc.next();
-            if (temp.equals("end")) {
-                break;
-            }
-            int index = Integer.parseInt(temp);
-            if (index > (mandatorySubjects.size() + choiceSubjects.size())) {
-                System.out.println("없는 과목입니다!");
-                createStudent();
-            } else if (index < mandatorySubjects.size()) {
-                studentSubjects.add(mandatorySubjects.get(index - 1));
-                countMandatory++;
-            } else if (index > mandatorySubjects.size()) {
-                studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
-                countChoice++;
+            try {
+                if (printData) {
+                    System.out.print("필수과목: ");
+                    for (int i = 0; i < mandatorySubjects.size(); i++) {
+                        System.out.print((i + 1) + ". " + mandatorySubjects.get(i) + " ");
+                    }
+                    System.out.println();
+                    System.out.print("선택과목: ");
+                    for (int i = 0; i < choiceSubjects.size(); i++) {
+                        System.out.print((i + mandatorySubjects.size() + 1) + ". " + choiceSubjects.get(i) + " ");
+                    }
+                    System.out.println();
+                    System.out.println("입력이 끝나면 end 를 입력하세요!");
+                    System.out.print("수강생이 선택한 과목을 입력하세요: ");
+                }
+
+                input = sc.next();
+                if (input.equals("end")) {
+                    if (countMandatory >= 3 && countChoice >= 2) {
+                        break;
+                    } else {
+                        throw new NotEnoughSubjectsException();
+                    }
+                }
+
+                int index = Integer.parseInt(input);
+
+                if (index > (mandatorySubjects.size() + choiceSubjects.size())) {
+                    throw new SubjectOutOfBoundException();
+                } else if (index <= mandatorySubjects.size()) {
+                    studentSubjects.add(mandatorySubjects.get(index - 1));
+                    countMandatory++;
+                    printData = false;
+                } else {
+                    studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
+                    countChoice++;
+                    printData = false;
+                }
+
+            } catch (SubjectOutOfBoundException e) {
+                System.out.print(e.getMessage() + "\n\n");
+                printData = true;
+                studentSubjects.clear();
+            } catch (NotEnoughSubjectsException e) {
+                System.out.print(e.getMessage() + "\n\n");
+                sc.nextLine();
+                printData = true;
+                studentSubjects.clear();
+            } catch (NumberFormatException e) {
+                System.out.println("과목번호를 입력하세요!\n");
+                sc.nextLine();
+                printData = true;
+                studentSubjects.clear();
             }
         }
-
 
         Student student = new Student(studentID, studentName, studentStatus, studentSubjects);
         initializeData.setStudentStore(student);
