@@ -1,8 +1,5 @@
 package camp.function;
 
-import camp.exception.NotEnoughSubjectsException;
-import camp.exception.NotStatusException;
-import camp.exception.SubjectOutOfBoundException;
 import camp.model.Student;
 
 import java.util.LinkedList;
@@ -13,6 +10,7 @@ import java.util.stream.Stream;
 public class StudentDAO {
     private static Scanner sc = new Scanner(System.in);
     SubjectDAO subjectDAO = new SubjectDAO();
+    InitializeData initializeData = new InitializeData();
 
     // 고유 번호
     private int studentIndex;
