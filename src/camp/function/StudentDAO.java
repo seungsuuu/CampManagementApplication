@@ -119,26 +119,26 @@ public class StudentDAO {
                     System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
 
-                if (!errors.isEmpty()) {
-                    throw new ValidationException();
+                if (!errors.isEmpty() && input.equals("end")) {
+                    throw new ValidationException(errors);
                 }
+
                 input = sc.next();
 
                 if (input.equals("end")) {
                     if (countMandatory >= 3 && countChoice >= 2) {
+                        if (!errors.isEmpty()) {
+                            throw new ValidationException(errors);
+                        }
                         break;
                     } else {
-                        errors.add(new NotEnoughSubjectsException().getMessage());
-                        printSubject = false;
-                        // throw new NotEnoughSubjectsException();
+                        throw new NotEnoughSubjectsException();
                     }
                 }
 
                 index = Integer.parseInt(input);
                 if (index <= 0 || index > (mandatorySubjects.size() + choiceSubjects.size())) {
-                    // throw new SubjectOutOfBoundException();
-                    errors.add(new SubjectOutOfBoundException().getMessage());
-                    printSubject=false;
+                    throw new SubjectOutOfBoundException();
                 } else if (index <= mandatorySubjects.size()) {
                     studentSubjects.add(mandatorySubjects.get(index - 1));
                     countMandatory++;
@@ -156,20 +156,20 @@ public class StudentDAO {
                 sc = new Scanner(System.in);
                 studentSubjects.clear();
             } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-                System.out.println(errors);
                 errors.clear();
                 studentSubjects.clear();
                 sc = new Scanner(System.in);
                 printSubject = true;
-            }/*            catch (SubjectOutOfBoundException e) {
-                System.out.println(e.getMessage());
+            } catch (SubjectOutOfBoundException e) {
+                errors.add(new SubjectOutOfBoundException().getMessage());
                 studentSubjects.clear();
+                printSubject = false;
             } catch (NotEnoughSubjectsException e) {
-                System.out.println(e.getMessage());
+                errors.add(new NotEnoughSubjectsException().getMessage());
                 sc = new Scanner(System.in);
                 studentSubjects.clear();
-            } */
+                printSubject = false;
+            }
         }
 
         Set<String> set = new LinkedHashSet<>(studentSubjects);
