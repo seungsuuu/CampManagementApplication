@@ -19,7 +19,7 @@ public class ScoreDAO {
     }
 
     public ScoreDAO() {
-        this.scoreStore = Stream.of(
+        this.scoreStore = new LinkedList<>(Stream.of(
                 new Score(
                         studentDAO.getStudentStore().get(0).getStudentId(),
                         subjectDAO.getSubjectStore().get(0).getSubjectId(),
@@ -41,7 +41,7 @@ public class ScoreDAO {
                         30,
                         'N'
                 )
-        ).toList();
+        ).toList());
     }
 
     // 수강생 고유번호 입력받음

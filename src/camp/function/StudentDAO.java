@@ -15,7 +15,7 @@ public class StudentDAO {
     SubjectDAO subjectDAO = new SubjectDAO();
 
     // 고유 번호
-    private int studentIndex = 0;
+    private int studentIndex;
     private static final String INDEX_TYPE_STUDENT = "ST";
 
     // 데이터 저장 리스트
@@ -27,7 +27,7 @@ public class StudentDAO {
 
     // 생성자
     public StudentDAO() {
-        this.studentStore = Stream.of(
+        this.studentStore = new LinkedList<>(Stream.of(
                 new Student(
                         sequence(),
                         "여단",
@@ -46,7 +46,7 @@ public class StudentDAO {
                         "Yellow",
                         new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL", "디자인 패턴", "Spring Security", "Redis", "MongoDB"))
                 )
-        ).toList();
+        ).toList());
     }
 
     // 수강생 등록

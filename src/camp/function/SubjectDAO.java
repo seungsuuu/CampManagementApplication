@@ -11,7 +11,7 @@ public class SubjectDAO {
     private String SUBJECT_TYPE_CHOICE = "CHOICE";
 
     // index 관리 필드
-    private int subjectIndex = 0;
+    private int subjectIndex;
     protected static final String INDEX_TYPE_SUBJECT = "SU";
 
     // 데이터 저장 리스트
