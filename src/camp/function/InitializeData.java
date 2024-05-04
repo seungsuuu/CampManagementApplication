@@ -4,6 +4,7 @@ import camp.model.Score;
 import camp.model.Student;
 import camp.model.Subject;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -12,18 +13,18 @@ import java.util.stream.Stream;
 // 고유번호 부여
 public class InitializeData {
     // 데이터 저장소
-    private List<Student> studentStore = new LinkedList<>();
-    private List<Subject> subjectStore = new LinkedList<>();
-    private List<Score> scoreStore = new LinkedList<>();
+    private List<Student> studentStore;
+    private List<Subject> subjectStore;
+    private List<Score> scoreStore;
 
     // 과목 타입
     private String SUBJECT_TYPE_MANDATORY = "MANDATORY";
     private String SUBJECT_TYPE_CHOICE = "CHOICE";
 
     // index 관리 필드
-    private int studentIndex = 0;
+    private int studentIndex;
     protected static final String INDEX_TYPE_STUDENT = "ST";
-    private int subjectIndex = 0;
+    private int subjectIndex;
     protected static final String INDEX_TYPE_SUBJECT = "SU";
 //    private int scoreIndex;
 //    protected static final String INDEX_TYPE_SCORE = "SC";
@@ -40,7 +41,6 @@ public class InitializeData {
     public List<Score> getScoreStore() {
         return scoreStore;
     }
-
 
     // 초기 데이터 생성 : 과목 데이터
     public void setInitData() {
@@ -173,4 +173,3 @@ public class InitializeData {
 //        }
 //    }
 }
-
