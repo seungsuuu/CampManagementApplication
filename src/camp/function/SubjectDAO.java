@@ -6,9 +6,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SubjectDAO {
-    // 데이터 저장 리스트
-    private List<Subject> subjectStore = new LinkedList<>();
-
     // 과목 타입
     private String SUBJECT_TYPE_MANDATORY = "MANDATORY";
     private String SUBJECT_TYPE_CHOICE = "CHOICE";
@@ -16,6 +13,13 @@ public class SubjectDAO {
     // index 관리 필드
     private int subjectIndex = 0;
     protected static final String INDEX_TYPE_SUBJECT = "SU";
+
+    // 데이터 저장 리스트
+    private List<Subject> subjectStore = new LinkedList<>();
+
+    public List<Subject> getSubjectStore() {
+        return subjectStore;
+    }
 
     public SubjectDAO() {
         this.subjectStore = List.of(
@@ -65,14 +69,6 @@ public class SubjectDAO {
                         SUBJECT_TYPE_CHOICE
                 )
         );
-    }
-
-    public List<Subject> getSubjectStore() {
-        return subjectStore;
-    }
-
-    public void setSubjectStore(List<Subject> subjectStore) {
-        this.subjectStore = subjectStore;
     }
 
     // index 자동 증가 : 고유번호

@@ -3,6 +3,7 @@ package camp;
 import camp.function.InitializeData;
 import camp.function.ScoreDAO;
 import camp.function.StudentDAO;
+import camp.function.SubjectDAO;
 
 import java.util.Scanner;
 
@@ -24,13 +25,21 @@ public class CampManagementApplication {
     // 기능 구현 클래스
     private static StudentDAO studentDAO = new StudentDAO();
     private static ScoreDAO scoreDAO = new ScoreDAO();
+    private static SubjectDAO subjectDAO = new SubjectDAO();
 
     public static void main(String[] args) {
+        // InitializeData 초기 데이터 출력 확인
+        System.out.println("\n InitializeData 초기화");
         initializeData.setInitData();
-        // 초기 데이터 출력 확인
         System.out.println(initializeData.getStudentStore());
         System.out.println(initializeData.getScoreStore());
         System.out.println(initializeData.getSubjectStore());
+
+        // DAO에서 초기 데이터 출력 확인
+        System.out.println("\n DAO 초기화");
+        System.out.println(studentDAO.getStudentStore());
+        System.out.println(scoreDAO.getScoreStore());
+        System.out.println(subjectDAO.getSubjectStore());
 
         try {
             displayMainView();

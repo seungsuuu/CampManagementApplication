@@ -8,6 +8,7 @@ import camp.model.Student;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class StudentDAO {
     private static Scanner sc = new Scanner(System.in);
@@ -19,6 +20,34 @@ public class StudentDAO {
 
     // 데이터 저장 리스트
     private List<Student> studentStore = new LinkedList<>();
+
+    public List<Student> getStudentStore() {
+        return studentStore;
+    }
+
+    // 생성자
+    public StudentDAO() {
+        this.studentStore = Stream.of(
+                new Student(
+                        sequence(),
+                        "여단",
+                        "Green",
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "디자인 패턴", "Spring Security"))
+                ),
+                new Student(
+                        sequence(),
+                        "이단",
+                        "Red",
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "디자인 패턴", "Spring Security", "Redis"))
+                ),
+                new Student(
+                        sequence(),
+                        "삼단",
+                        "Yellow",
+                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL", "디자인 패턴", "Spring Security", "Redis", "MongoDB"))
+                )
+        ).toList();
+    }
 
     // 수강생 등록
     public void createStudent() {
