@@ -1,11 +1,13 @@
 package camp.function;
 
-import camp.Exception.NotEnoughSubjectsException;
-import camp.Exception.NotStatusException;
-import camp.Exception.SubjectOutOfBoundException;
+import camp.exception.NotEnoughSubjectsException;
+import camp.exception.NotStatusException;
+import camp.exception.SubjectOutOfBoundException;
 import camp.model.Student;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
 
 public class StudentDAO {
     // 스캐너
@@ -13,6 +15,9 @@ public class StudentDAO {
 
     // 고유번호 부여
     InitializeData initializeData = new InitializeData();
+
+    // 데이터 저장 리스트
+    private List<Student> studentStore = new LinkedList<>();
 
     // 수강생 등록
     public void createStudent() {
@@ -58,7 +63,7 @@ public class StudentDAO {
                 }
 
                 if (printSubject) {
-                    System.out.print("\n필수과목: ");
+                    System.out.print("필수과목: ");
                     for (int i = 0; i < mandatorySubjects.size(); i++) {
                         System.out.print((i + 1) + "." + mandatorySubjects.get(i) + " ");
                     }
@@ -69,7 +74,7 @@ public class StudentDAO {
                     }
                     System.out.println();
                     System.out.println("입력이 끝나면 end 를 입력하세요!");
-                    System.out.print("수강생이 선택한 과목을 입력하세요: ");
+                    System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
 
                 input = sc.next();
@@ -102,22 +107,22 @@ public class StudentDAO {
                 studentSubjects.clear();
             } catch (NotEnoughSubjectsException e) {
                 System.out.println(e.getMessage());
-                sc=new Scanner(System.in);
+                sc = new Scanner(System.in);
                 printSubject = true;
                 studentSubjects.clear();
             } catch (NumberFormatException e) {
                 System.out.println("번호를 입력하세요!\n");
-                sc=new Scanner(System.in);
+                sc = new Scanner(System.in);
                 printSubject = true;
                 studentSubjects.clear();
             }
         }
 
         Student student = new Student(studentID, studentName, studentStatus, studentSubjects);
-        initializeData.setStudentStore(student);
+        studentStore.add(student);
 
         System.out.println("수강생 등록 성공!\n");
-        System.out.println(initializeData.getStudentStore());
+        System.out.println(studentStore);
     }
 
     // 수강생 목록 조회

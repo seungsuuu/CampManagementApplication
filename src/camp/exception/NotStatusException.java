@@ -1,4 +1,4 @@
-package camp.Exception;
+package camp.exception;
 
 public class NotStatusException extends Exception{
     public NotStatusException() {

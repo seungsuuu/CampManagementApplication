@@ -1,4 +1,4 @@
-package camp.Exception;
+package camp.exception;
 
 // 입력한 과목 수가 부족할 떄 방생
 public class NotEnoughSubjectsException extends Exception {

@@ -4,7 +4,6 @@ import camp.model.Score;
 import camp.model.Student;
 import camp.model.Subject;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -40,10 +39,6 @@ public class InitializeData {
 
     public List<Score> getScoreStore() {
         return scoreStore;
-    }
-
-    public void setStudentStore(Student student) {
-        this.studentStore.add(student);
     }
 
 
