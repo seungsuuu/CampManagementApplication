@@ -29,17 +29,17 @@ public class CampManagementApplication {
 
     public static void main(String[] args) {
         // InitializeData 초기 데이터 출력 확인
-        System.out.println("\n InitializeData 초기화");
-        initializeData.setInitData();
-        System.out.println(initializeData.getStudentStore());
-        System.out.println(initializeData.getScoreStore());
-        System.out.println(initializeData.getSubjectStore());
-
-        // DAO에서 초기 데이터 출력 확인
-        System.out.println("\n DAO 초기화");
-        System.out.println(studentDAO.getStudentStore());
-        System.out.println(scoreDAO.getScoreStore());
-        System.out.println(subjectDAO.getSubjectStore());
+//        System.out.println("\n InitializeData 초기화");
+//        initializeData.setInitData();
+//        System.out.println(initializeData.getStudentStore());
+//        System.out.println(initializeData.getScoreStore());
+//        System.out.println(initializeData.getSubjectStore());
+//
+//        // DAO에서 초기 데이터 출력 확인
+//        System.out.println("\n DAO 초기화");
+//        System.out.println(studentDAO.getStudentStore());
+//        System.out.println(scoreDAO.getScoreStore());
+//        System.out.println(subjectDAO.getSubjectStore());
 
         try {
             displayMainView();
