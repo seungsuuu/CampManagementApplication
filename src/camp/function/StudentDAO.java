@@ -2,52 +2,18 @@ package camp.function;
 
 import camp.model.Student;
 
+import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class StudentDAO {
+    // 스캐너
     private static Scanner sc = new Scanner(System.in);
-    SubjectDAO subjectDAO = new SubjectDAO();
+
+    // 고유번호 부여
     InitializeData initializeData = new InitializeData();
 
-    // 고유 번호
-    private int studentIndex;
-    private static final String INDEX_TYPE_STUDENT = "ST";
-
-    // 데이터 저장 리스트
-    private List<Student> studentStore = new LinkedList<>();
-
-    public List<Student> getStudentStore() {
-        return studentStore;
-    }
-
-    // 생성자
-    public StudentDAO() {
-        this.studentStore = new LinkedList<>(Stream.of(
-                new Student(
-                        sequence(),
-                        "여단",
-                        "Green",
-                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "디자인 패턴", "Spring Security"))
-                ),
-                new Student(
-                        sequence(),
-                        "이단",
-                        "Red",
-                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "디자인 패턴", "Spring Security", "Redis"))
-                ),
-                new Student(
-                        sequence(),
-                        "삼단",
-                        "Yellow",
-                        new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL", "디자인 패턴", "Spring Security", "Redis", "MongoDB"))
-                )
-        ).toList());
-    }
-
-      // 수강생 등록
+    // 수강생 등록
     public void createStudent() {
         String studentID = initializeData.sequence(InitializeData.INDEX_TYPE_STUDENT);
         String studentName = " ";
@@ -70,13 +36,4 @@ public class StudentDAO {
         // 기능 구현
         System.out.println("\n수강생 목록 조회 성공!");
     }
-
-    // 고유 번호 증가
-    public String sequence() {
-        studentIndex++;
-        return INDEX_TYPE_STUDENT + studentIndex;
-    }
 }
-
-
-
