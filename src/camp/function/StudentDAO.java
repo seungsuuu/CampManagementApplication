@@ -5,17 +5,16 @@ import camp.exception.NotEnoughSubjectsException;
 import camp.exception.NotStatusException;
 import camp.exception.SubjectOutOfBoundException;
 import camp.model.Student;
-import camp.model.Subject;
 
+import javax.security.auth.Subject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class StudentDAO {
-    // 스캐너
     private static Scanner sc = new Scanner(System.in);
+    SubjectDAO subjectDAO = new SubjectDAO();
 
-    InitializeData initializeData = new InitializeData();
     // 고유 번호
     private int studentIndex = 0;
     private static final String INDEX_TYPE_STUDENT = "ST";
@@ -30,8 +29,10 @@ public class StudentDAO {
         String studentStatus = " ";
         LinkedList<String> statusTypes = new LinkedList<>(List.of("green", "yellow", "red"));
         LinkedList<String> studentSubjects = new LinkedList<>();
-        LinkedList<String> mandatorySubjects = new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL")); // 최소 3개 이상
-        LinkedList<String> choiceSubjects = new LinkedList<>(List.of("디자인 패턴", "Spring Security", "Redis", "MongoDB")); // 최소 2개 이상
+//        LinkedList<String> mandatorySubjects = new LinkedList<>(List.of("Java", "객체지향", "Spring", "JPA", "MySQL")); // 최소 3개 이상
+//        LinkedList<String> choiceSubjects = new LinkedList<>(List.of("디자인 패턴", "Spring Security", "Redis", "MongoDB")); // 최소 2개 이상
+        LinkedList<String> mandatorySubjects = new LinkedList<>(); // 최소 3개 이상
+        LinkedList<String> choiceSubjects = new LinkedList<>(); // 최소 2개 이상
         int countMandatory = 0;
         int countChoice = 0;
         boolean printStatus = true;
@@ -67,6 +68,13 @@ public class StudentDAO {
                 }
 
                 if (printSubject) {
+                    for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
+                        if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
+                            mandatorySubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
+                        } else {
+                            choiceSubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
+                        }
+                    }
                     System.out.print("필수과목: ");
                     for (int i = 0; i < mandatorySubjects.size(); i++) {
                         System.out.print((i + 1) + "." + mandatorySubjects.get(i) + " ");
