@@ -111,15 +111,20 @@ public class ScoreDAO {
     // 과목 회차 입력받고, data가 없을 경우 점수 입력 받기
     private void enterScore(ScoreDAO scoreDAO, SubjectDAO subjectDAO
             , Student student, String subject) {
+        List<Subject> subjectList = subjectDAO.getSubjectStore();
+        List<Score> scoreList = scoreDAO.getScoreStore();
 
-        List<Score> scores = scoreDAO.getScoreStore();
         Scanner sc = new Scanner(System.in);
         char scorerank;
         System.out.print("\n점수를 입력할 회차를 입력해주세요 : ");
         int round = sc.nextInt();
 
         //해당 수강생의 해당 과목의 해당 회차의 성적이 존재하는지 조회
-        Optional<Score> filteredscore = scores.stream().filter(s -> s.getSubjectId().equals(subject))
+        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subject))
+                .findFirst();
+        String subjectname = findsubject.get().getSubjectId();
+
+        Optional<Score> filteredscore = scoreList.stream().filter(s -> s.getSubjectId().equals(subjectname))
                 .filter(s -> s.getStudentId().equals(student.getStudentId()))
                 .filter(s -> s.getScoreRound() == round)
                 .findFirst();
@@ -132,7 +137,7 @@ public class ScoreDAO {
             int score = sc.nextInt();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
-            Optional<Subject> acesssubject = subjectDAO.getSubjectStore().stream()
+            Optional<Subject> acesssubject = subjectList.stream()
                     .filter(sub -> sub.getSubjectName().equals(subject))
                     .findFirst();
             // 과목 객체로 변환
@@ -143,7 +148,7 @@ public class ScoreDAO {
             Score newscore = new Score(student.getStudentId(), realsubject.getSubjectId(), round, score, scorerank);
             // add
             scoreDAO.AddScoreStore(newscore);
-
+            System.out.println(scoreDAO.getScoreStore());
         }
     }
 
@@ -155,7 +160,7 @@ public class ScoreDAO {
 
         List<Student> students = studentDAO.getStudentStore();
 
-        // 입력받은 수강생이 실제 수강생 목록에 조회하는지 확인
+        // 입력받은 수강생이 실제 수강생 목록에 존재하는지 확인
         Optional<Student> optionalstudent = students.stream().filter(s -> s.getStudentId().equals(studentId)).findFirst();
         Student student;
 
@@ -182,8 +187,6 @@ public class ScoreDAO {
         } else {
             System.out.println("해당 학생을 찾을 수 없습니다.");
         }
-
-        System.out.println("\n점수 등록 성공!");
     }
 
     // 수강생의 과목별 회차 점수 수정
