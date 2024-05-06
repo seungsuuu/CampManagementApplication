@@ -65,7 +65,8 @@ public class StudentDAO {
 
     // 수강생 목록 조회
     public void inquireStudent() {
-        List<Student> students = getStudentStore();
+        // 학생 목록 가져오기
+        List<Student> studentsList = getStudentStore();
 
         System.out.println("\n수강생 목록을 조회합니다...");
         System.out.print("조회할 학생의 이름을 입력하세요 : ");
@@ -73,13 +74,14 @@ public class StudentDAO {
         System.out.print("조회할 학생의 고유번호을 입력하세요 : ");
         String index = sc.next();
 
-        Optional<Student> optionalStudentName = students.stream().filter(s-> s.getStudentName().equals(name)).findFirst();
-        Optional<Student> optionalStudentIndex = students.stream().filter(s -> s.getStudentId().equals(index)).findFirst();
+        // 이름과 고유번호 확인
+        Optional<Student> optionalStudentName = studentsList.stream().filter(s-> s.getStudentName().equals(name)).findFirst();
+        Optional<Student> optionalStudentIndex = studentsList.stream().filter(s -> s.getStudentId().equals(index)).findFirst();
 
-        Student student;
 
+        // 조회하기
         if(optionalStudentIndex.isPresent() && optionalStudentName.isPresent()){
-            student = optionalStudentIndex.get();
+            Student student = optionalStudentIndex.get();
             System.out.println("=== 조회내용 ===");
             System.out.println("이름: "+student.getStudentName());
             System.out.println("고유번호 : "+student.getStudentId());
