@@ -1,9 +1,6 @@
 package camp.function;
 
-import camp.exception.NotEnoughSubjectsException;
-import camp.exception.NotStatusException;
-import camp.exception.SubjectOutOfBoundException;
-import camp.exception.ValidationException;
+import camp.exception.*;
 import camp.model.Student;
 
 import java.util.*;
@@ -63,18 +60,25 @@ public class StudentDAO {
         LinkedList<String> errors = new LinkedList<>();
         int countMandatory = 0;
         int countChoice = 0;
+        boolean printName = true;
         boolean printStatus = true;
         boolean printSubject = true;
         String input = " ";
         int index = 0;
         sc = new Scanner(System.in);
 
-        System.out.println("\n수강생을 등록합니다...");
-        System.out.print("수강생 이름 입력: ");
-        studentName = sc.nextLine();
-
         while (true) {
             try {
+                if(printName){
+                    System.out.println("\n수강생을 등록합니다...");
+                    System.out.print("수강생 이름 입력: ");
+                    studentName = sc.nextLine();
+                    if(studentName.length()<=1 || studentName.chars().anyMatch(Character::isDigit)){
+                        throw new NotNameException();
+                    }
+                    printName = false;
+                }
+
                 if (printStatus) {
                     System.out.print("\n수강생 상태: ");
                     for (int i = 0; i < statusTypes.size(); i++) {
@@ -148,7 +152,11 @@ public class StudentDAO {
                     countChoice++;
                     printSubject = false;
                 }
-            } catch (NotStatusException e) {
+            } catch (NotNameException e){
+                System.out.println(e.getMessage());
+                printName = true;
+            }
+            catch (NotStatusException e) {
                 System.out.println(e.getMessage());
                 printStatus = true;
             } catch (NumberFormatException e) {
