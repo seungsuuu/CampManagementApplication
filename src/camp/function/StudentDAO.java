@@ -8,11 +8,15 @@ import camp.model.Student;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
+import camp.model.Student;
+
+
 
 public class StudentDAO {
     private static Scanner sc = new Scanner(System.in);
     SubjectDAO subjectDAO = new SubjectDAO();
+    InitializeData initializeData = new InitializeData();
 
     // 고유 번호
     private int studentIndex;
@@ -182,11 +186,36 @@ public class StudentDAO {
         System.out.println(studentStore);
     }
 
+
     // 수강생 목록 조회
     public void inquireStudent() {
+        // 학생 목록 가져오기
+        List<Student> studentsList = getStudentStore();
+
         System.out.println("\n수강생 목록을 조회합니다...");
-        // 기능 구현
-        System.out.println("\n수강생 목록 조회 성공!");
+        System.out.print("조회할 학생의 이름을 입력하세요 : ");
+        String name = sc.next();
+        System.out.print("조회할 학생의 고유번호을 입력하세요 : ");
+        String index = sc.next();
+
+        // 이름과 고유번호 확인
+        Optional<Student> optionalStudentName = studentsList.stream().filter(s-> s.getStudentName().equals(name)).findFirst();
+        Optional<Student> optionalStudentIndex = studentsList.stream().filter(s -> s.getStudentId().equals(index)).findFirst();
+
+
+        // 조회하기
+        if(optionalStudentIndex.isPresent() && optionalStudentName.isPresent()){
+            Student student = optionalStudentIndex.get();
+            System.out.println("=== 조회내용 ===");
+            System.out.println("이름: "+student.getStudentName());
+            System.out.println("고유번호 : "+student.getStudentId());
+            System.out.println("상태 : "+student.getStudentStatus());
+            System.out.println("과목 : "+student.getStudentSubjects());
+            System.out.println("\n수강생 목록 조회 성공!");
+        }else{
+            System.out.println("다시한번 확인해주세요.");
+        }
+
     }
 
     // 고유 번호 증가
