@@ -173,13 +173,12 @@ public class ScoreDAO {
         // 회차 입력받기
         int round = enterRound();
 
-        if (roundList != null){
-            if(roundList.contains(round)) { // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
+        // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
+        if (roundList != null && roundList.contains(round)) {
                 System.out.println("이미 존재하는 점수입니다.");
                 return;
-            }
         }
-        if(roundList == null || !roundList.contains(round))  { // 점수가 존재하지 않을 경우
+        else { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
