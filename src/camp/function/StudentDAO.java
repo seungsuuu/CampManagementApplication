@@ -69,11 +69,11 @@ public class StudentDAO {
 
         while (true) {
             try {
-                if(printName){
+                if (printName) {
                     System.out.println("\n수강생을 등록합니다...");
                     System.out.print("수강생 이름 입력: ");
                     studentName = sc.nextLine();
-                    if(studentName.length()<=1 || studentName.chars().anyMatch(Character::isDigit)){
+                    if (studentName.length() <= 1 || studentName.chars().anyMatch(Character::isDigit)) {
                         throw new NotNameException();
                     }
                     printName = false;
@@ -152,11 +152,10 @@ public class StudentDAO {
                     countChoice++;
                     printSubject = false;
                 }
-            } catch (NotNameException e){
+            } catch (NotNameException e) {
                 System.out.println(e.getMessage());
                 printName = true;
-            }
-            catch (NotStatusException e) {
+            } catch (NotStatusException e) {
                 System.out.println(e.getMessage());
                 printStatus = true;
             } catch (NumberFormatException e) {
@@ -202,19 +201,19 @@ public class StudentDAO {
         System.out.print("\n상세정보를 확인하시겠습니까?(네 / 아니오) ");
         String check = sc.next();
 
-        if(check.equals("네")){
+        if (check.equals("네")) {
             System.out.print("\n조회할 학생의 고유번호를 입력하세요 : ");
             String index = sc.next();
             Optional<Student> optionalStudentIndex = studentList.stream().filter(student -> student.getStudentId().equals(index)).findFirst();
 
-            if(optionalStudentIndex.isPresent()) {
+            if (optionalStudentIndex.isPresent()) {
                 Student student = optionalStudentIndex.get();
                 System.out.println("이름: " + student.getStudentName());
                 System.out.println("고유번호 : " + student.getStudentId());
                 System.out.println("상태 : " + student.getStudentStatus());
                 System.out.println("과목 : " + student.getStudentSubjects());
                 System.out.println("\n수강생 목록 조회 성공!");
-            }else {
+            } else {
                 System.out.println("고유번호를 확인해주세요.");
             }
         }
