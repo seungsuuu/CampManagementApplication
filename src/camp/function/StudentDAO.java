@@ -7,16 +7,7 @@ import camp.exception.ValidationException;
 import camp.model.Student;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import camp.model.Student;
-
-
-
-import camp.model.Student;
-
-
 
 public class StudentDAO {
     private static Scanner sc = new Scanner(System.in);

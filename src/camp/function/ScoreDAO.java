@@ -5,6 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ScoreDAO {
     StudentDAO studentDAO = new StudentDAO();
@@ -23,30 +24,35 @@ public class ScoreDAO {
     }
 
     public ScoreDAO() {
-        this.scoreStore = new LinkedList<>();
-//                Stream.of(
-//                new Score(
-//                        studentDAO.getStudentStore().get(0).getStudentId(),
-//                        subjectDAO.getSubjectStore().get(0).getSubjectId(),
-//                        1,
-//                        10,
-//                        'N'
-//                ),
-//                new Score(
-//                        studentDAO.getStudentStore().get(0).getStudentId(),
-//                        subjectDAO.getSubjectStore().get(0).getSubjectId(),
-//                        2,
-//                        20,
-//                        'F'
-//                ),
-//                new Score(
-//                        studentDAO.getStudentStore().get(0).getStudentId(),
-//                        subjectDAO.getSubjectStore().get(2).getSubjectId(),
-//                        1,
-//                        30,
-//                        'N'
-//                )
-//        ).toList());
+    }
+
+    public ScoreDAO(StudentDAO studentDAO, SubjectDAO subjectDAO) {
+        this.studentDAO = studentDAO;
+        this.subjectDAO = subjectDAO;
+        this.scoreStore = new LinkedList<>(
+                Stream.of(
+                        new Score(
+                                studentDAO.getStudentStore().get(0).getStudentId(),
+                                subjectDAO.getSubjectStore().get(0).getSubjectId(),
+                                1,
+                                10,
+                                'N'
+                        ),
+                        new Score(
+                                studentDAO.getStudentStore().get(0).getStudentId(),
+                                subjectDAO.getSubjectStore().get(0).getSubjectId(),
+                                2,
+                                20,
+                                'F'
+                        ),
+                        new Score(
+                                studentDAO.getStudentStore().get(0).getStudentId(),
+                                subjectDAO.getSubjectStore().get(2).getSubjectId(),
+                                1,
+                                30,
+                                'N'
+                        )
+                ).toList());
     }
 
     // 수강생 고유번호 입력받음
@@ -264,8 +270,8 @@ public class ScoreDAO {
 
         String studentId = enterStudentId(); // 조회할 수강생 고유 번호
         int countStudentId = 0;
-        for(Score score : scoreStore) {
-            if (Objects.equals(score.getStudentId(), studentId)){
+        for (Score score : scoreStore) {
+            if (Objects.equals(score.getStudentId(), studentId)) {
                 inquireScore.add(score);
                 countStudentId++;
             }
@@ -276,7 +282,7 @@ public class ScoreDAO {
         }
 
         Student student = new Student();
-        for(Student st: studentDAO.getStudentStore()) {
+        for (Student st : studentDAO.getStudentStore()) {
             if (Objects.equals(st.getStudentId(), studentId)) {
                 student = st;
             }
@@ -286,8 +292,8 @@ public class ScoreDAO {
         String subjectName = enterSubjectName(); // 조회할 수강 과목 이름
         String subjectId = "";
         int countSubjectName = 0;
-        for (Subject subject : subjectDAO.getSubjectStore()){
-            if(Objects.equals(subjectName, subject.getSubjectName())) {
+        for (Subject subject : subjectDAO.getSubjectStore()) {
+            if (Objects.equals(subjectName, subject.getSubjectName())) {
                 subjectId = subject.getSubjectId();
                 countSubjectName++;
                 break;
@@ -299,8 +305,8 @@ public class ScoreDAO {
         }
 
         int countSubjectId = 0;
-        for(Score score: inquireScore) {
-            if (!Objects.equals(score.getSubjectId(), subjectId)){
+        for (Score score : inquireScore) {
+            if (!Objects.equals(score.getSubjectId(), subjectId)) {
                 inquireScore.remove(score);
             } else {
                 countSubjectId++;
@@ -314,7 +320,7 @@ public class ScoreDAO {
         int round = enterRound(); // 죄회할 성적 회차
         int countRound = 0;
         for (Score score : inquireScore) {
-            if(round == score.getScoreRound()) {
+            if (round == score.getScoreRound()) {
                 resultScore = score;
                 countRound++;
             }
@@ -326,8 +332,8 @@ public class ScoreDAO {
 
         System.out.println("\n회차별 등급을 조회합니다...");
 
-        System.out.println("\n수강생 : "+student.getStudentName()+" / 수강 과목 : "+subjectName);
-        System.out.println("시험 회차 : "+round+" / 시험 등급 : "+resultScore.getScoreRank());
+        System.out.println("\n수강생 : " + student.getStudentName() + " / 수강 과목 : " + subjectName);
+        System.out.println("시험 회차 : " + round + " / 시험 등급 : " + resultScore.getScoreRank());
 
         System.out.println("\n등급 조회 성공!");
     }

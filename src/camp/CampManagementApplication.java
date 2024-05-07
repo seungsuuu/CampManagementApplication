@@ -24,8 +24,8 @@ public class CampManagementApplication {
 
     // 기능 구현 클래스
     private static StudentDAO studentDAO = new StudentDAO();
-    private static ScoreDAO scoreDAO = new ScoreDAO();
     private static SubjectDAO subjectDAO = new SubjectDAO();
+    private static ScoreDAO scoreDAO = new ScoreDAO(studentDAO, subjectDAO);
 
     public static void main(String[] args) {
         // InitializeData 초기 데이터 출력 확인
