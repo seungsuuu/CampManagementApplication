@@ -179,7 +179,7 @@ public class ScoreDAO {
                 return;
             }
         }
-        if(!roundList.contains(round)) { // 점수가 존재하지 않을 경우
+        if(roundList == null || !roundList.contains(round))  { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
