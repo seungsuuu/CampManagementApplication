@@ -308,7 +308,6 @@ public class ScoreDAO {
 
     // 수강생의 특정 과목 회차별 등급 조회
     public void inquireRoundRankBySubject() {
-//        List<Subject> subjectList = subjectDAO.getSubjectStore(); // 과목 리스트
         List<Score> inquireScoreStudentId = new LinkedList<>();
         List<Score> inquireScoreSubjectId = new LinkedList<>();
         Student student = new Student();
@@ -363,11 +362,6 @@ public class ScoreDAO {
             System.out.println("입력된 수강 과목과 일치하는 과목의 점수가 없습니다.");
             return;
         }
-
-        //subject name으로 subject id 찾기
-//        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
-//                .findFirst();
-//        String subjectID = findsubject.get().getSubjectId();
 
         // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
         List<Integer> roundList = inquiryRounds(subjectId, student.getStudentId());
