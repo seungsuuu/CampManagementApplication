@@ -5,6 +5,7 @@ import camp.model.Student;
 import camp.model.Subject;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ScoreDAO {
@@ -29,30 +30,29 @@ public class ScoreDAO {
     public ScoreDAO(StudentDAO studentDAO, SubjectDAO subjectDAO) {
         this.studentDAO = studentDAO;
         this.subjectDAO = subjectDAO;
-        this.scoreStore = new LinkedList<>(
-                Stream.of(
-                        new Score(
-                                studentDAO.getStudentStore().get(0).getStudentId(),
-                                subjectDAO.getSubjectStore().get(0).getSubjectId(),
-                                1,
-                                10,
-                                'N'
-                        ),
-                        new Score(
-                                studentDAO.getStudentStore().get(0).getStudentId(),
-                                subjectDAO.getSubjectStore().get(0).getSubjectId(),
-                                2,
-                                20,
-                                'F'
-                        ),
-                        new Score(
-                                studentDAO.getStudentStore().get(0).getStudentId(),
-                                subjectDAO.getSubjectStore().get(2).getSubjectId(),
-                                1,
-                                30,
-                                'N'
-                        )
-                ).toList());
+        this.scoreStore = new LinkedList<>(Stream.of(
+                new Score(
+                        studentDAO.getStudentStore().get(0).getStudentId(),
+                        subjectDAO.getSubjectStore().get(0).getSubjectId(),
+                        1,
+                        10,
+                        'N'
+                ),
+                new Score(
+                        studentDAO.getStudentStore().get(0).getStudentId(),
+                        subjectDAO.getSubjectStore().get(0).getSubjectId(),
+                        2,
+                        20,
+                        'F'
+                ),
+                new Score(
+                        studentDAO.getStudentStore().get(0).getStudentId(),
+                        subjectDAO.getSubjectStore().get(2).getSubjectId(),
+                        1,
+                        30,
+                        'N'
+                )
+        ).toList());
     }
 
     // 수강생 고유번호 입력받음
@@ -102,6 +102,28 @@ public class ScoreDAO {
         }
     }
 
+    // 회차 정보 저장하기
+    private List<Integer> inquiryRounds(String studentID, String SubjectID){
+        List<Score> scoreList = getScoreStore();
+        List<Integer> roundList = scoreList.stream()
+                .filter(s -> s.getSubjectId().equals(studentID))
+                .filter(s -> s.getStudentId().equals(SubjectID))
+                .mapToInt(Score::getScoreRound)
+                .boxed()
+                .collect(Collectors.toList());
+        if (roundList.isEmpty()){
+            System.out.println("점수가 존재하지 않습니다.");
+            return null;
+        }
+        System.out.println("점수가 존재하는 회차");
+        for(int i:roundList){
+            System.out.print(i+" ");
+        }
+        System.out.println();
+        return roundList;
+    }
+
+
     // 랭크 산정 함수
     private Character enterRank(Subject subject, int score) {
         // 과목 타입
@@ -138,31 +160,30 @@ public class ScoreDAO {
     }
 
     // 과목 회차 입력받고, data가 없을 경우 점수 입력 받기
-    private void saveScore(Student student, String subject) {
+    private void saveScore(Student student, String subjectName) {
         List<Subject> subjectList = subjectDAO.getSubjectStore();
-        List<Score> scoreList = getScoreStore();
 
+        //subject name으로 subject id 찾기
+        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
+                .findFirst();
+        String subjectID = findsubject.get().getSubjectId();
+
+        // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
+        List<Integer> roundList = inquiryRounds(subjectID, student.getStudentId());
+        // 회차 입력받기
         int round = enterRound();
 
-        //해당 수강생의 해당 과목의 해당 회차의 성적이 존재하는지 조회
-        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subject))
-                .findFirst();
-        String subjectname = findsubject.get().getSubjectId();
-
-        Optional<Score> filteredscore = scoreList.stream().filter(s -> s.getSubjectId().equals(subjectname))
-                .filter(s -> s.getStudentId().equals(student.getStudentId()))
-                .filter(s -> s.getScoreRound() == round)
-                .findFirst();
-
-        if (filteredscore.isPresent()) { // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
-            System.out.println("이미 존재하는 점수입니다.");
-            return;
+        if (roundList != null){
+            if(roundList.contains(round)) { // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
+                System.out.println("이미 존재하는 점수입니다.");
+                return;
+            }
         } else { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
             Optional<Subject> acesssubject = subjectList.stream()
-                    .filter(sub -> sub.getSubjectName().equals(subject))
+                    .filter(sub -> sub.getSubjectName().equals(subjectName))
                     .findFirst();
             // 과목 객체로 변환
             Subject realsubject = acesssubject.get();
@@ -176,7 +197,6 @@ public class ScoreDAO {
         }
     }
 
-    // studentDAO,scoreDAO,subjectDAO
     // 수강생의 과목별 시험 회차 및 점수 등록
     public void createScore() {
         String studentId = enterStudentId(); // 관리할 수강생 고유 번호
@@ -215,6 +235,7 @@ public class ScoreDAO {
 
     // 수강생의 과목별 회차 점수 수정
     public void updateRoundScoreBySubject() {
+        List<Subject> subjectList = subjectDAO.getSubjectStore(); // 과목 리스트
         String studentId = enterStudentId(); // 관리할 수강생 고유 번호
 
         // 학생 찾기
@@ -231,7 +252,15 @@ public class ScoreDAO {
 
             // 해당 학생이 해당 과목을 수강했는지 확인
             String subjectName = enterSubjectName(); // 수정할 과목명
+
             if (student.getStudentSubjects().contains(subjectName)) {
+                //subject name으로 subject id 찾기
+                Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
+                        .findFirst();
+                String subjectID = findsubject.get().getSubjectId();
+
+                // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
+                List<Integer> roundList = inquiryRounds(subjectID, student.getStudentId());
 
                 // 수정할 회차 입력
                 int round = enterRound();
@@ -257,9 +286,12 @@ public class ScoreDAO {
                             .findFirst();
 
                     if (optionalSubject.isPresent()) {
+                        score.setSubjectId(optionalSubject.get().getSubjectId());
                         Subject subject = optionalSubject.get();
                         // 등급 재계산을 위해 과목 객체를 인자로 전달하여 enterRank 메서드 호출
+
                         score.setScoreRank(enterRank(subject, newScore));
+
                         System.out.println("점수가 수정되었습니다: " + score);
                     } else {
                         System.out.println("해당 과목을 찾을 수 없습니다.");
@@ -330,6 +362,15 @@ public class ScoreDAO {
             return;
         }
 
+        //subject name으로 subject id 찾기
+        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
+                .findFirst();
+        String subjectID = findsubject.get().getSubjectId();
+
+        // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
+        List<Integer> roundList = inquiryRounds(subjectID, student.getStudentId());
+
+        int round = enterRound(); // 조회할 성적 회차
         // 입력 받은 시험 회차의 Score 객체 찾기
         int round = enterRound(); // 죄회할 성적 회차
         int countRound = 0;
