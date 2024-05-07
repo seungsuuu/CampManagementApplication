@@ -74,14 +74,24 @@ public class ScoreDAO {
     private int enterRound() {
         System.out.print("\n과목의 시험 회차를 입력하시오...");
         Scanner sc = new Scanner(System.in);
-        return sc.nextInt();
+        int round = sc.nextInt();
+        while(round > 10 || round <= 0){
+            System.out.println("1~10 범위에 맞는 숫자를 입력해주세요.");
+            round = sc.nextInt();
+        }
+        return round;
     }
 
     // 회차  점수 입력받기
     private int enterScore() {
         System.out.print("점수를 입력해주세요 : ");
         Scanner sc = new Scanner(System.in);
-        return sc.nextInt();
+        int score = sc.nextInt();
+        while(score > 100 || score < 0){
+            System.out.println("0~100 범위에 맞는 숫자를 입력해주세요.");
+            score = sc.nextInt();
+        }
+        return score;
     }
 
     // 해당 수강생이 등록한 과목 출력하기
