@@ -178,7 +178,8 @@ public class ScoreDAO {
                 System.out.println("이미 존재하는 점수입니다.");
                 return;
             }
-        } else { // 점수가 존재하지 않을 경우
+        }
+        if(!roundList.contains(round)) { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
@@ -307,6 +308,7 @@ public class ScoreDAO {
 
     // 수강생의 특정 과목 회차별 등급 조회
     public void inquireRoundRankBySubject() {
+//        List<Subject> subjectList = subjectDAO.getSubjectStore(); // 과목 리스트
         List<Score> inquireScoreStudentId = new LinkedList<>();
         List<Score> inquireScoreSubjectId = new LinkedList<>();
         Student student = new Student();
@@ -363,14 +365,13 @@ public class ScoreDAO {
         }
 
         //subject name으로 subject id 찾기
-        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
-                .findFirst();
-        String subjectID = findsubject.get().getSubjectId();
+//        Optional<Subject> findsubject = subjectList.stream().filter(s -> s.getSubjectName().equals(subjectName))
+//                .findFirst();
+//        String subjectID = findsubject.get().getSubjectId();
 
         // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
-        List<Integer> roundList = inquiryRounds(subjectID, student.getStudentId());
+        List<Integer> roundList = inquiryRounds(subjectId, student.getStudentId());
 
-        int round = enterRound(); // 조회할 성적 회차
         // 입력 받은 시험 회차의 Score 객체 찾기
         int round = enterRound(); // 죄회할 성적 회차
         int countRound = 0;
