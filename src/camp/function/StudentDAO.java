@@ -115,7 +115,7 @@ public class StudentDAO {
                         System.out.print((i + mandatorySubjects.size() + 1) + "." + choiceSubjects.get(i) + " ");
                     }
                     System.out.println();
-                    System.out.println("입력이 끝나면 end 를 입력하세요!");
+                    System.out.println("필수과목 3개 이상, 선택과목 2개 이상 입력하세요.\n입력이 끝나면 end 를 입력하세요!");
                     System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
 
