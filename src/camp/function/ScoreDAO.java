@@ -108,7 +108,10 @@ public class ScoreDAO {
                 .mapToInt(Score::getScoreRound)
                 .boxed()
                 .collect(Collectors.toList());
-
+        if (roundList.isEmpty()){
+            System.out.println("점수가 존재하지 않습니다.");
+            return null;
+        }
         System.out.println("점수가 존재하는 회차");
         for(int i:roundList){
             System.out.print(i+" ");
@@ -167,9 +170,11 @@ public class ScoreDAO {
         // 회차 입력받기
         int round = enterRound();
 
-        if (roundList.contains(round)) { // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
-            System.out.println("이미 존재하는 점수입니다.");
-            return;
+        if (roundList != null){
+            if(roundList.contains(round)) { // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
+                System.out.println("이미 존재하는 점수입니다.");
+                return;
+            }
         } else { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
