@@ -275,14 +275,17 @@ public class ScoreDAO {
 
     // 수강생의 특정 과목 회차별 등급 조회
     public void inquireRoundRankBySubject() {
-        List<Score> inquireScore = new LinkedList<>();
+        List<Score> inquireScoreStudentId = new LinkedList<>();
+        List<Score> inquireScoreSubjectId = new LinkedList<>();
+        Student student = new Student();
         Score resultScore = new Score();
 
-        String studentId = enterStudentId(); // 조회할 수강생 고유 번호
+        // 입력 받은 수강생 고유 번호로 해당하는 Score 객체들을 리스트화
+        String studentId = enterStudentId(); // 조회할 수강생 고유 번호 입력
         int countStudentId = 0;
-        for (Score score : scoreStore) {
-            if (Objects.equals(score.getStudentId(), studentId)) {
-                inquireScore.add(score);
+        for (Score sco : scoreStore) {
+            if (Objects.equals(sco.getStudentId(), studentId)) {
+                inquireScoreStudentId.add(sco);
                 countStudentId++;
             }
         }
@@ -291,14 +294,15 @@ public class ScoreDAO {
             return;
         }
 
-        Student student = new Student();
-        for (Student st : studentDAO.getStudentStore()) {
-            if (Objects.equals(st.getStudentId(), studentId)) {
-                student = st;
+        // 입력 받은 수강생이 수강하고 있는 과목 출력
+        for (Student stu : studentDAO.getStudentStore()) {
+            if (Objects.equals(stu.getStudentId(), studentId)) {
+                student = stu;
             }
         }
         inquirySubject(student);
 
+        // 입력 받은 수강 과목 이름을 조회를 위해 수강 과목 고유번호로 변경
         String subjectName = enterSubjectName(); // 조회할 수강 과목 이름
         String subjectId = "";
         int countSubjectName = 0;
@@ -306,7 +310,6 @@ public class ScoreDAO {
             if (Objects.equals(subjectName, subject.getSubjectName())) {
                 subjectId = subject.getSubjectId();
                 countSubjectName++;
-                break;
             }
         }
         if (countSubjectName == 0) {
@@ -314,11 +317,11 @@ public class ScoreDAO {
             return;
         }
 
+        // 수강 과목 이름에서 변경된 수강 과목 고유번호로 해당하는 Score 객체들을 리스트화
         int countSubjectId = 0;
-        for (Score score : inquireScore) {
-            if (!Objects.equals(score.getSubjectId(), subjectId)) {
-                inquireScore.remove(score);
-            } else {
+        for (Score score : inquireScoreStudentId) {
+            if (Objects.equals(score.getSubjectId(), subjectId)) {
+                inquireScoreSubjectId.add(score);
                 countSubjectId++;
             }
         }
@@ -327,9 +330,10 @@ public class ScoreDAO {
             return;
         }
 
+        // 입력 받은 시험 회차의 Score 객체 찾기
         int round = enterRound(); // 죄회할 성적 회차
         int countRound = 0;
-        for (Score score : inquireScore) {
+        for (Score score : inquireScoreSubjectId) {
             if (round == score.getScoreRound()) {
                 resultScore = score;
                 countRound++;
@@ -342,8 +346,11 @@ public class ScoreDAO {
 
         System.out.println("\n회차별 등급을 조회합니다...");
 
-        System.out.println("\n수강생 : " + student.getStudentName() + " / 수강 과목 : " + subjectName);
-        System.out.println("시험 회차 : " + round + " / 시험 등급 : " + resultScore.getScoreRank());
+        System.out.println("\n=== 조회내용 ===");
+        System.out.println("수강생 : " + student.getStudentName());
+        System.out.println("수강 과목 : " + subjectName);
+        System.out.println("시험 회차 : " + round);
+        System.out.println("시험 등급 : " + resultScore.getScoreRank());
 
         System.out.println("\n등급 조회 성공!");
     }
