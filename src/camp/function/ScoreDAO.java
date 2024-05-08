@@ -292,7 +292,12 @@ public class ScoreDAO {
 
                         score.setScoreRank(enterRank(subject, newScore));
 
-                        System.out.println("점수가 수정되었습니다: " + score);
+                        System.out.println("\n=== 수정내용 ===");
+                        System.out.println("수강생 ID : " + score.getStudentId());
+                        System.out.println("과목 ID : " + score.getSubjectId());
+                        System.out.println("시험 회차 : " + score.getScoreRound());
+                        System.out.println("★시험 점수 : " + score.getScorePoint());
+                        System.out.println("★시험 등급 : " + score.getScoreRank());
                     } else {
                         System.out.println("해당 과목을 찾을 수 없습니다.");
                     }
