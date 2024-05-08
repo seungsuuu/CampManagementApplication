@@ -72,11 +72,15 @@ public class ScoreDAO {
 
     // 시험 회차 입력받기
     private int enterRound() {
+        final int MAX_ROUND = 10;
+        final int MIN_ROUND = 0;
+
         System.out.print("\n과목의 시험 회차를 입력하시오...");
         Scanner sc = new Scanner(System.in);
         int round = sc.nextInt();
-        while(round > 10 || round <= 0){
-            System.out.println("1~10 범위에 맞는 숫자를 입력해주세요.");
+
+        while(round > MAX_ROUND || round <= MIN_ROUND){
+            System.out.println(MIN_ROUND + "~" + MAX_ROUND + " 범위에 맞는 숫자를 입력해주세요.");
             round = sc.nextInt();
         }
         return round;
@@ -84,11 +88,15 @@ public class ScoreDAO {
 
     // 회차  점수 입력받기
     private int enterScore() {
+        final int MAX_SCORE = 100;
+        final int MIN_SCORE = 0;
+
         System.out.print("점수를 입력해주세요 : ");
         Scanner sc = new Scanner(System.in);
         int score = sc.nextInt();
-        while(score > 100 || score < 0){
-            System.out.println("0~100 범위에 맞는 숫자를 입력해주세요.");
+
+        while(score > MAX_SCORE || score < MIN_SCORE) {
+            System.out.println(MIN_SCORE + "~" + MAX_SCORE + " 범위에 맞는 숫자를 입력해주세요.");
             score = sc.nextInt();
         }
         return score;
