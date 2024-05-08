@@ -52,17 +52,17 @@ public class Score {
     }
 
     // setter
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
+//    public void setStudentId(String studentId) {
+//        this.studentId = studentId;
+//    }
 
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
 
-    public void setScoreRound(int scoreRound) {
-        this.scoreRound = scoreRound;
-    }
+//    public void setScoreRound(int scoreRound) {
+//        this.scoreRound = scoreRound;
+//    }
 
     public void setScorePoint(int scorePoint) {
         this.scorePoint = scorePoint;

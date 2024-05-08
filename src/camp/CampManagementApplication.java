@@ -5,7 +5,6 @@ import camp.function.ScoreDAO;
 import camp.function.StudentDAO;
 import camp.function.SubjectDAO;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
