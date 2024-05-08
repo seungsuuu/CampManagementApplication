@@ -2,8 +2,14 @@ package camp.function;
 
 import camp.exception.ValidationException;
 import camp.model.Student;
+import camp.model.Subject;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StudentDAO {
@@ -64,15 +70,21 @@ public class StudentDAO {
         String studentID = sequence();
         String studentName = " ";
         String studentStatus = " ";
-        LinkedList<String> studentSubjects = new LinkedList<>();
+        List<String> studentSubjects = new LinkedList<>();
 
         boolean isPrintName = true;
         boolean isPrintStatus = true;
         boolean isPrintSubject = true;
 
         LinkedList<String> statusTypes = new LinkedList<>(List.of("green", "yellow", "red"));
-        LinkedList<String> mandatorySubjects = new LinkedList<>(); // 최소 3개 이상
-        LinkedList<String> choiceSubjects = new LinkedList<>(); // 최소 2개 이상
+        List<String> mandatorySubjects = subjectDAO.getSubjectStore().stream()
+                .filter(s -> s.getSubjectType().equals("MANDATORY"))
+                .map(Subject::getSubjectName)
+                .toList(); // 최소 3개 이상
+        List<String> choiceSubjects = subjectDAO.getSubjectStore().stream()
+                .filter(s -> s.getSubjectType().equals("CHOICE"))
+                .map(Subject::getSubjectName)
+                .toList(); // 최소 2개 이상
 
         int countMandatory = 0;
         int countChoice = 0;
@@ -82,14 +94,6 @@ public class StudentDAO {
         sc = new Scanner(System.in);
         String input = " ";
         int inputToInt = 0;
-
-        for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
-            if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
-                mandatorySubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
-            } else {
-                choiceSubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
-            }
-        }
 
         while (true) {
             try {
@@ -127,14 +131,19 @@ public class StudentDAO {
                     isNotSubject = false;
                     isNotEnoughSubject = false;
 
+                    AtomicInteger index = new AtomicInteger(1); // 시작 인덱스
                     System.out.print("\n필수과목: ");
-                    for (int i = 0; i < mandatorySubjects.size(); i++) {
-                        System.out.print((i + 1) + "." + mandatorySubjects.get(i) + " ");
-                    }
+                    mandatorySubjects.forEach(name -> {
+                                int currentIndex = index.getAndIncrement();
+                                System.out.print(currentIndex + "." + name + " ");
+                            }
+                    );
                     System.out.print("\n선택과목: ");
-                    for (int i = 0; i < choiceSubjects.size(); i++) {
-                        System.out.print((i + mandatorySubjects.size() + 1) + "." + choiceSubjects.get(i) + " ");
-                    }
+                    choiceSubjects.forEach(name -> {
+                                int currentIndex = index.getAndIncrement();
+                                System.out.print(currentIndex + "." + name + " ");
+                            }
+                    );
                     System.out.println("\n필수과목 3개 이상, 선택과목 2개 이상, 입력이 끝나면 end 를 입력하세요.");
                     System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
@@ -174,9 +183,7 @@ public class StudentDAO {
             }
         }
 
-        Set<String> set = new LinkedHashSet<>(studentSubjects);
-        LinkedList<String> distinctStudentSubjects = new LinkedList<>(set);
-
+        LinkedList<String> distinctStudentSubjects = studentSubjects.stream().distinct().collect(Collectors.toCollection(LinkedList::new));
         Student student = new Student(studentID, studentName, studentStatus, distinctStudentSubjects);
         studentStore.add(student);
 
