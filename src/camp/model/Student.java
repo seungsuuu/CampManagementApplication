@@ -1,6 +1,5 @@
 package camp.model;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Student {
@@ -29,6 +28,7 @@ public class Student {
                 ", studentSubjects=" + studentSubjects +
                 "}\n";
     }
+
 
     // getter
     public String getStudentId() {
