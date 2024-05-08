@@ -72,6 +72,14 @@ public class StudentDAO {
         String input = " ";
         int index = 0;
 
+        for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
+            if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
+                mandatorySubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
+            } else {
+                choiceSubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
+            }
+        }
+
         while (true) {
             try {
                 if (isPrintName) {
@@ -103,18 +111,9 @@ public class StudentDAO {
                 if (isPrintSubject) {
                     countMandatory = 0;
                     countChoice = 0;
-                    mandatorySubjects.clear();
-                    choiceSubjects.clear();
                     isNotSubject = false;
                     isNotEnoughSubject = false;
 
-                    for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
-                        if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
-                            mandatorySubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
-                        } else {
-                            choiceSubjects.add(subjectDAO.getSubjectStore().get(i).getSubjectName());
-                        }
-                    }
                     System.out.print("\n필수과목: ");
                     for (int i = 0; i < mandatorySubjects.size(); i++) {
                         System.out.print((i + 1) + "." + mandatorySubjects.get(i) + " ");
@@ -147,11 +146,9 @@ public class StudentDAO {
                 } else if (index <= mandatorySubjects.size()) {
                     studentSubjects.add(mandatorySubjects.get(index - 1));
                     countMandatory++;
-//                    isPrintSubject = false;
                 } else {
                     studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
                     countChoice++;
-//                    isPrintSubject = false;
                 }
                 isPrintSubject = false;
             } catch (NumberFormatException e) {
