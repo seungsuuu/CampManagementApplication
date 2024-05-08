@@ -5,6 +5,7 @@ import camp.function.ScoreDAO;
 import camp.function.StudentDAO;
 import camp.function.SubjectDAO;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -44,7 +45,8 @@ public class CampManagementApplication {
         try {
             displayMainView();
         } catch (Exception e) {
-            System.out.println(e.getClass().getName() + "\n오류 발생!\n프로그램을 종료합니다.");
+            System.out.println(e.getClass().getName());
+            System.out.println("\n오류 발생!\n프로그램을 종료합니다.");
         }
 
         sc.close();
@@ -59,15 +61,15 @@ public class CampManagementApplication {
             System.out.println("2. 점수 관리");
             System.out.println("3. 프로그램 종료");
             System.out.print("관리 항목을 선택하세요...");
-            int input = sc.nextInt();
+            String input = sc.next();
 
             switch (input) {
-                case 1 -> displayStudentView(); // 수강생 관리
-                case 2 -> displayScoreView(); // 점수 관리
-                case 3 -> flag = false; // 프로그램 종료
+                case "1" -> displayStudentView(); // 수강생 관리
+                case "2" -> displayScoreView(); // 점수 관리
+                case "3" -> flag = false; // 프로그램 종료
                 default -> {
                     System.out.println("잘못된 입력입니다.\n되돌아갑니다!");
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 }
             }
         }
@@ -83,12 +85,12 @@ public class CampManagementApplication {
             System.out.println("2. 수강생 목록 조회");
             System.out.println("3. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
-            int input = sc.nextInt();
+            String input = sc.next();
 
             switch (input) {
-                case 1 -> studentDAO.createStudent(); // 수강생 등록
-                case 2 -> studentDAO.inquireStudent(); // 수강생 상세 조회
-                case 3 -> flag = false; // 메인 화면 이동
+                case "1" -> studentDAO.createStudent(); // 수강생 등록
+                case "2" -> studentDAO.inquireStudent(); // 수강생 상세 조회
+                case "3" -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;
@@ -107,13 +109,13 @@ public class CampManagementApplication {
             System.out.println("3. 수강생의 특정 과목 회차별 등급 조회");
             System.out.println("4. 메인 화면 이동");
             System.out.print("관리 항목을 선택하세요...");
-            int input = sc.nextInt();
+            String input = sc.next();
 
             switch (input) {
-                case 1 -> scoreDAO.createScore(); // 수강생의 과목별 시험 회차 및 점수 등록
-                case 2 -> scoreDAO.updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
-                case 3 -> scoreDAO.inquireRoundRankBySubject(); // 수강생의 특정 과목 회차별 등급 조회
-                case 4 -> flag = false; // 메인 화면 이동
+                case "1" -> scoreDAO.createScore(); // 수강생의 과목별 시험 회차 및 점수 등록
+                case "2" -> scoreDAO.updateRoundScoreBySubject(); // 수강생의 과목별 회차 점수 수정
+                case "3" -> scoreDAO.inquireRoundRankBySubject(); // 수강생의 특정 과목 회차별 등급 조회
+                case "4" -> flag = false; // 메인 화면 이동
                 default -> {
                     System.out.println("잘못된 입력입니다.\n메인 화면 이동...");
                     flag = false;

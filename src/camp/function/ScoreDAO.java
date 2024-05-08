@@ -193,7 +193,7 @@ public class ScoreDAO {
             Score newscore = new Score(student.getStudentId(), realsubject.getSubjectId(), round, score, scorerank);
             // add
             AddScoreStore(newscore);
-            System.out.println(getScoreStore());
+//            System.out.println(getScoreStore());
         }
     }
 
