@@ -46,31 +46,42 @@ public class StudentDAO {
         ).toList());
     }
 
-    // 수강생 등록
-    // 리스트 중복 제거: list -> set -> list
-    //                 List<String> newList = list.stream().distinct().collect(Collectors.toList());
+    /**
+     * 수강생 등록 <br>
+     * 이름, 상태, 선택한 과목들을 입력 받아 수강생 정보를 저장하는 리스트에 삽입 <br>
+     * <p>
+     * 변수 정보 <br>
+     * studentID, studentName, studentStatus, studentSubjects 새로 등록한 수강생의 고유번호, 이름, 상태, 선택한 과목들 <br>
+     * isPrintName, isPrintStatus, isPrintSubject 이름, 상태, 선택한 과목들 입력 시 안내문 출력 여부 <br>
+     * statusTypes, mandatorySubjects, choiceSubjects 선택할 수 있는 수강생 상태, 필수과목, 선택과목 종류를 저장하는 리스트 <br>
+     * countMandatory, countChoice 수강생이 선택한 필수과목 수, 선택과목 수 <br>
+     * isNotSubject, isNotEnoughSubject 선택한 과목 입력 시 예외처리 여부 <br>
+     *
+     * @throws NumberFormatException
+     *         유효한 이름, 상태, 과목이 입력되지 않았을 때 예외 처리
+     */
     public void createStudent() {
         String studentID = sequence();
+        String studentName = " ";
+        String studentStatus = " ";
+        LinkedList<String> studentSubjects = new LinkedList<>();
 
         boolean isPrintName = true;
-        String studentName = " ";
-
         boolean isPrintStatus = true;
-        String studentStatus = " ";
-        LinkedList<String> statusTypes = new LinkedList<>(List.of("green", "yellow", "red"));
-
         boolean isPrintSubject = true;
-        LinkedList<String> studentSubjects = new LinkedList<>();
-        int countMandatory = 0;
-        int countChoice = 0;
+
+        LinkedList<String> statusTypes = new LinkedList<>(List.of("green", "yellow", "red"));
         LinkedList<String> mandatorySubjects = new LinkedList<>(); // 최소 3개 이상
         LinkedList<String> choiceSubjects = new LinkedList<>(); // 최소 2개 이상
+
+        int countMandatory = 0;
+        int countChoice = 0;
         boolean isNotSubject = false;
         boolean isNotEnoughSubject = false;
 
         sc = new Scanner(System.in);
         String input = " ";
-        int index = 0;
+        int inputToInt = 0;
 
         for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
             if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
@@ -86,6 +97,7 @@ public class StudentDAO {
                     System.out.println("\n수강생을 등록합니다...");
                     System.out.print("수강생 이름 입력: ");
                     studentName = sc.nextLine();
+
                     if (studentName.length() <= 1 || studentName.chars().anyMatch(Character::isDigit)) {
                         throw new ValidationException("notName");
                     }
@@ -99,11 +111,12 @@ public class StudentDAO {
                     }
                     System.out.print("\n수강생 상태를 번호로 입력하세요: ");
                     input = sc.nextLine();
-                    index = Integer.parseInt(input);
-                    if (index <= 0 || index > statusTypes.size()) {
+
+                    inputToInt = Integer.parseInt(input);
+                    if (inputToInt <= 0 || inputToInt > statusTypes.size()) {
                         throw new ValidationException("notStatus");
                     } else {
-                        studentStatus = statusTypes.get(index - 1);
+                        studentStatus = statusTypes.get(inputToInt - 1);
                         isPrintStatus = false;
                     }
                 }
@@ -125,8 +138,8 @@ public class StudentDAO {
                     System.out.println("\n필수과목 3개 이상, 선택과목 2개 이상, 입력이 끝나면 end 를 입력하세요.");
                     System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
-
                 input = sc.next();
+
                 if (input.equals("end")) {
                     if (countMandatory >= 3 && countChoice >= 2 && !isNotSubject) {
                         break;
@@ -140,14 +153,14 @@ public class StudentDAO {
                     throw new ValidationException(isNotEnoughSubject, isNotSubject);
                 }
 
-                index = Integer.parseInt(input);
-                if (index <= 0 || index > (mandatorySubjects.size() + choiceSubjects.size())) {
+                inputToInt = Integer.parseInt(input);
+                if (inputToInt <= 0 || inputToInt > (mandatorySubjects.size() + choiceSubjects.size())) {
                     isNotSubject = true;
-                } else if (index <= mandatorySubjects.size()) {
-                    studentSubjects.add(mandatorySubjects.get(index - 1));
+                } else if (inputToInt <= mandatorySubjects.size()) {
+                    studentSubjects.add(mandatorySubjects.get(inputToInt - 1));
                     countMandatory++;
                 } else {
-                    studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
+                    studentSubjects.add(choiceSubjects.get(inputToInt - mandatorySubjects.size() - 1));
                     countChoice++;
                 }
                 isPrintSubject = false;
