@@ -171,7 +171,6 @@ public class StudentDAO {
 //        System.out.println(studentStore);
     }
 
-
     // 수강생 목록 조회
     public void inquireStudent() {
         List<Student> studentList = getStudentStore();
