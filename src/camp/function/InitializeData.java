@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 // 리스트 초기값 설정
 // 고유번호 부여
+@Deprecated
 public class InitializeData {
     // 데이터 저장소
     private List<Student> studentStore;

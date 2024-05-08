@@ -1,6 +1,6 @@
 package camp.function;
 
-import camp.exception.*;
+import camp.exception.ValidationException;
 import camp.model.Student;
 
 import java.util.*;
@@ -51,56 +51,62 @@ public class StudentDAO {
     //                 List<String> newList = list.stream().distinct().collect(Collectors.toList());
     public void createStudent() {
         String studentID = sequence();
+
+        boolean isPrintName = true;
         String studentName = " ";
+
+        boolean isPrintStatus = true;
         String studentStatus = " ";
         LinkedList<String> statusTypes = new LinkedList<>(List.of("green", "yellow", "red"));
+
+        boolean isPrintSubject = true;
         LinkedList<String> studentSubjects = new LinkedList<>();
-        LinkedList<String> mandatorySubjects = new LinkedList<>(); // 최소 3개 이상
-        LinkedList<String> choiceSubjects = new LinkedList<>(); // 최소 2개 이상
-        LinkedList<String> errors = new LinkedList<>();
         int countMandatory = 0;
         int countChoice = 0;
-        boolean printName = true;
-        boolean printStatus = true;
-        boolean printSubject = true;
+        LinkedList<String> mandatorySubjects = new LinkedList<>(); // 최소 3개 이상
+        LinkedList<String> choiceSubjects = new LinkedList<>(); // 최소 2개 이상
+        boolean isNotSubject = false;
+        boolean isNotEnoughSubject = false;
+
+        sc = new Scanner(System.in);
         String input = " ";
         int index = 0;
-        sc = new Scanner(System.in);
 
         while (true) {
             try {
-                if (printName) {
+                if (isPrintName) {
                     System.out.println("\n수강생을 등록합니다...");
                     System.out.print("수강생 이름 입력: ");
                     studentName = sc.nextLine();
                     if (studentName.length() <= 1 || studentName.chars().anyMatch(Character::isDigit)) {
-                        throw new NotNameException();
+                        throw new ValidationException("notName");
                     }
-                    printName = false;
+                    isPrintName = false;
                 }
 
-                if (printStatus) {
+                if (isPrintStatus) {
                     System.out.print("\n수강생 상태: ");
                     for (int i = 0; i < statusTypes.size(); i++) {
                         System.out.print((i + 1) + "." + statusTypes.get(i) + " ");
                     }
-                    System.out.println();
-                    System.out.print("수강생 상태를 번호로 입력하세요: ");
+                    System.out.print("\n수강생 상태를 번호로 입력하세요: ");
                     input = sc.nextLine();
                     index = Integer.parseInt(input);
                     if (index <= 0 || index > statusTypes.size()) {
-                        throw new NotStatusException();
+                        throw new ValidationException("notStatus");
                     } else {
                         studentStatus = statusTypes.get(index - 1);
-                        printStatus = false;
+                        isPrintStatus = false;
                     }
                 }
 
-                if (printSubject) {
+                if (isPrintSubject) {
                     countMandatory = 0;
                     countChoice = 0;
                     mandatorySubjects.clear();
                     choiceSubjects.clear();
+                    isNotSubject = false;
+                    isNotEnoughSubject = false;
 
                     for (int i = 0; i < subjectDAO.getSubjectStore().size(); i++) {
                         if (subjectDAO.getSubjectStore().get(i).getSubjectType().equals("MANDATORY")) {
@@ -113,69 +119,48 @@ public class StudentDAO {
                     for (int i = 0; i < mandatorySubjects.size(); i++) {
                         System.out.print((i + 1) + "." + mandatorySubjects.get(i) + " ");
                     }
-                    System.out.println();
-                    System.out.print("선택과목: ");
+                    System.out.print("\n선택과목: ");
                     for (int i = 0; i < choiceSubjects.size(); i++) {
                         System.out.print((i + mandatorySubjects.size() + 1) + "." + choiceSubjects.get(i) + " ");
                     }
-                    System.out.println();
-                    System.out.println("필수과목 3개 이상, 선택과목 2개 이상 입력하세요.\n입력이 끝나면 end 를 입력하세요!");
+                    System.out.println("\n필수과목 3개 이상, 선택과목 2개 이상, 입력이 끝나면 end 를 입력하세요.");
                     System.out.print("수강생이 선택한 과목 번호를 입력하세요: ");
                 }
 
-                if (!errors.isEmpty() && input.equals("end")) {
-                    throw new ValidationException(errors);
-                }
-
                 input = sc.next();
-
                 if (input.equals("end")) {
-                    if (countMandatory >= 3 && countChoice >= 2) {
-                        if (!errors.isEmpty()) {
-                            throw new ValidationException(errors);
-                        }
+                    if (countMandatory >= 3 && countChoice >= 2 && !isNotSubject) {
                         break;
-                    } else {
-                        throw new NotEnoughSubjectsException();
                     }
+                    if (countMandatory >= 3 && countChoice >= 2) {
+                        isNotEnoughSubject = false;
+                    } else {
+                        isNotEnoughSubject = true;
+                    }
+                    isPrintSubject = true;
+                    throw new ValidationException(isNotEnoughSubject, isNotSubject);
                 }
 
                 index = Integer.parseInt(input);
                 if (index <= 0 || index > (mandatorySubjects.size() + choiceSubjects.size())) {
-                    throw new SubjectOutOfBoundException();
+                    isNotSubject = true;
                 } else if (index <= mandatorySubjects.size()) {
                     studentSubjects.add(mandatorySubjects.get(index - 1));
                     countMandatory++;
-                    printSubject = false;
+//                    isPrintSubject = false;
                 } else {
                     studentSubjects.add(choiceSubjects.get(index - mandatorySubjects.size() - 1));
                     countChoice++;
-                    printSubject = false;
+//                    isPrintSubject = false;
                 }
-            } catch (NotNameException e) {
-                System.out.println(e.getMessage());
-                printName = true;
-            } catch (NotStatusException e) {
-                System.out.println(e.getMessage());
-                printStatus = true;
+                isPrintSubject = false;
             } catch (NumberFormatException e) {
                 System.out.println("번호를 입력하세요!");
                 sc = new Scanner(System.in);
                 studentSubjects.clear();
             } catch (ValidationException e) {
-                errors.clear();
-                studentSubjects.clear();
-                sc = new Scanner(System.in);
-                printSubject = true;
-            } catch (SubjectOutOfBoundException e) {
-                errors.add(new SubjectOutOfBoundException().getMessage());
-                studentSubjects.clear();
-                printSubject = false;
-            } catch (NotEnoughSubjectsException e) {
-                errors.add(new NotEnoughSubjectsException().getMessage());
                 sc = new Scanner(System.in);
                 studentSubjects.clear();
-                printSubject = false;
             }
         }
 
