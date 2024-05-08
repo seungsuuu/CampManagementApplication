@@ -113,7 +113,7 @@ public class ScoreDAO {
                 .collect(Collectors.toList());
         if (roundList.isEmpty()){
             System.out.println("점수가 존재하지 않습니다.");
-            return null;
+            return Collections.emptyList();
         }
         System.out.println("점수가 존재하는 회차");
         for(int i:roundList){
@@ -174,7 +174,7 @@ public class ScoreDAO {
         int round = enterRound();
 
         // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
-        if (roundList != null && roundList.contains(round)) {
+        if (!roundList.isEmpty() && roundList.contains(round)) {
                 System.out.println("이미 존재하는 점수입니다.");
                 return;
         }
@@ -214,14 +214,14 @@ public class ScoreDAO {
             subject = enterSubjectName();
 
             // 해당 수강생의 수강 과목에 해당 과목이 있는지 조회
-            boolean existsubject = false;
+            boolean isExistSubject = false;
             for (String name : student.getStudentSubjects()) {
                 if (name.equals(subject)) {
-                    existsubject = true;
+                    isExistSubject = true;
                     break;
                 }
             }
-            if (existsubject) { // 과목이 존재한다면 점수 입력 함수로 이동
+            if (isExistSubject) { // 과목이 존재한다면 점수 입력 함수로 이동
                 saveScore(student, subject);
 
 
