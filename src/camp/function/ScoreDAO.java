@@ -79,7 +79,7 @@ public class ScoreDAO {
         Scanner sc = new Scanner(System.in);
         int round = sc.nextInt();
 
-        while(round > MAX_ROUND || round <= MIN_ROUND){
+        while (round > MAX_ROUND || round <= MIN_ROUND) {
             System.out.println(MIN_ROUND + "~" + MAX_ROUND + " 범위에 맞는 숫자를 입력해주세요.");
             round = sc.nextInt();
         }
@@ -95,7 +95,7 @@ public class ScoreDAO {
         Scanner sc = new Scanner(System.in);
         int score = sc.nextInt();
 
-        while(score > MAX_SCORE || score < MIN_SCORE) {
+        while (score > MAX_SCORE || score < MIN_SCORE) {
             System.out.println(MIN_SCORE + "~" + MAX_SCORE + " 범위에 맞는 숫자를 입력해주세요.");
             score = sc.nextInt();
         }
@@ -111,7 +111,7 @@ public class ScoreDAO {
     }
 
     // 회차 정보 저장하기
-    private List<Integer> inquiryRounds(String studentID, String SubjectID){
+    private List<Integer> inquiryRounds(String studentID, String SubjectID) {
         List<Score> scoreList = getScoreStore();
         List<Integer> roundList = scoreList.stream()
                 .filter(s -> s.getSubjectId().equals(studentID))
@@ -119,13 +119,13 @@ public class ScoreDAO {
                 .mapToInt(Score::getScoreRound)
                 .boxed()
                 .collect(Collectors.toList());
-        if (roundList.isEmpty()){
+        if (roundList.isEmpty()) {
             System.out.println("점수가 존재하지 않습니다.");
             return Collections.emptyList();
         }
         System.out.println("점수가 존재하는 회차");
-        for(int i:roundList){
-            System.out.print(i+" ");
+        for (int i : roundList) {
+            System.out.print(i + " ");
         }
         System.out.println();
         return roundList;
@@ -183,10 +183,9 @@ public class ScoreDAO {
 
         // 해당 학생의 해당 과목의 해당 회차 점수가 이미 존재할 경우
         if (!roundList.isEmpty() && roundList.contains(round)) {
-                System.out.println("이미 존재하는 점수입니다.");
-                return;
-        }
-        else { // 점수가 존재하지 않을 경우
+            System.out.println("이미 존재하는 점수입니다.");
+            return;
+        } else { // 점수가 존재하지 않을 경우
             int score = enterScore();
 
             // 과목명으로 과목 ID, 과목 타입 알아내기
@@ -201,7 +200,6 @@ public class ScoreDAO {
             Score newscore = new Score(student.getStudentId(), realsubject.getSubjectId(), round, score, scorerank);
             // add
             AddScoreStore(newscore);
-//            System.out.println(getScoreStore());
         }
     }
 

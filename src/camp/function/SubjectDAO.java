@@ -71,8 +71,7 @@ public class SubjectDAO {
         );
     }
 
-    // index 자동 증가 : 고유번호
-    // createStudent, setInitData
+    // 고유번호
     public String sequence() {
         subjectIndex++;
         return INDEX_TYPE_SUBJECT + subjectIndex;

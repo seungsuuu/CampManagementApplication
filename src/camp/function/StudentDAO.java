@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 public class StudentDAO {
     private static Scanner sc = new Scanner(System.in);
     SubjectDAO subjectDAO = new SubjectDAO();
-    InitializeData initializeData = new InitializeData();
 
     // 고유 번호
     private int studentIndex;
@@ -188,7 +187,6 @@ public class StudentDAO {
         studentStore.add(student);
 
         System.out.println("\n수강생 등록 성공!\n");
-//        System.out.println(studentStore);
     }
 
     // 수강생 목록 조회

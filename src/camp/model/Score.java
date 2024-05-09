@@ -10,7 +10,7 @@ public class Score {
     public Score() {
     }
 
-    public Score(String studentId, String subjectId, int scoreRound, int scorePoint, char scoreRank  ) {
+    public Score(String studentId, String subjectId, int scoreRound, int scorePoint, char scoreRank) {
         this.studentId = studentId;
         this.subjectId = subjectId;
         this.scoreRound = scoreRound;
@@ -51,18 +51,9 @@ public class Score {
         return scoreRank;
     }
 
-    // setter
-//    public void setStudentId(String studentId) {
-//        this.studentId = studentId;
-//    }
-
     public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
     }
-
-//    public void setScoreRound(int scoreRound) {
-//        this.scoreRound = scoreRound;
-//    }
 
     public void setScorePoint(int scorePoint) {
         this.scorePoint = scorePoint;
@@ -71,14 +62,5 @@ public class Score {
     public void setScoreRank(char scoreRank) {
         this.scoreRank = scoreRank;
     }
-
-    /* scoreID
-    public Score(String seq) {
-        this.scoreId = seq;
-    }
-    // Getter
-    public String getScoreId() {
-        return scoreId;
-    }*/
 
 }
