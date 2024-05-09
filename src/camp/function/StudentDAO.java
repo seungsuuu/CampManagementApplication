@@ -20,6 +20,13 @@ public class StudentDAO {
     private int studentIndex;
     private static final String INDEX_TYPE_STUDENT = "ST";
 
+    // 필수과목, 선택과목 최소 선택 개수
+    private static final int MIN_MANDATORY_SUBJECTS = 3;
+    private static final int MIN_CHOICE_SUBJECTS = 2;
+
+    // 유효하지 않은 선택
+    private static final int NOT_AVAILABLE_CHOICE = 0;
+
     // 데이터 저장 리스트
     private List<Student> studentStore = new LinkedList<>();
 
@@ -109,14 +116,14 @@ public class StudentDAO {
 
                 if (isPrintStatus) {
                     System.out.print("\n수강생 상태: ");
-                    for (int i = 0; i < statusTypes.size(); i++) {
+                    for (int i = NOT_AVAILABLE_CHOICE; i < statusTypes.size(); i++) {
                         System.out.print((i + 1) + "." + statusTypes.get(i) + " ");
                     }
                     System.out.print("\n수강생 상태를 번호로 입력하세요: ");
                     input = sc.nextLine();
 
                     inputToInt = Integer.parseInt(input);
-                    if (inputToInt <= 0 || inputToInt > statusTypes.size()) {
+                    if (inputToInt <= NOT_AVAILABLE_CHOICE || inputToInt > statusTypes.size()) {
                         throw new ValidationException("notStatus");
                     } else {
                         studentStatus = statusTypes.get(inputToInt - 1);
@@ -149,10 +156,10 @@ public class StudentDAO {
                 input = sc.next();
 
                 if (input.equals("end")) {
-                    if (countMandatory >= 3 && countChoice >= 2 && !isNotSubject) {
+                    if (countMandatory >= MIN_MANDATORY_SUBJECTS && countChoice >= MIN_CHOICE_SUBJECTS && !isNotSubject) {
                         break;
                     }
-                    if (countMandatory >= 3 && countChoice >= 2) {
+                    if (countMandatory >= MIN_MANDATORY_SUBJECTS && countChoice >= MIN_CHOICE_SUBJECTS) {
                         isNotEnoughSubject = false;
                     } else {
                         isNotEnoughSubject = true;
@@ -162,7 +169,7 @@ public class StudentDAO {
                 }
 
                 inputToInt = Integer.parseInt(input);
-                if (inputToInt <= 0 || inputToInt > (mandatorySubjects.size() + choiceSubjects.size())) {
+                if (inputToInt <= NOT_AVAILABLE_CHOICE || inputToInt > (mandatorySubjects.size() + choiceSubjects.size())) {
                     isNotSubject = true;
                 } else if (inputToInt <= mandatorySubjects.size()) {
                     studentSubjects.add(mandatorySubjects.get(inputToInt - 1));
