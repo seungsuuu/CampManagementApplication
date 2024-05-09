@@ -197,6 +197,8 @@ public class StudentDAO {
         for (Student student : studentStore) {
             System.out.println("이름 : " + student.getStudentName() + " / 고유번호 : " + student.getStudentId());
         }
+        System.out.println("\n수강생 목록 조회 성공!");
+
         System.out.print("\n상세정보를 확인하시겠습니까?(네 / 아니오) ");
         String check = sc.next();
 
@@ -211,7 +213,7 @@ public class StudentDAO {
                 System.out.println("고유번호 : " + student.getStudentId());
                 System.out.println("상태 : " + student.getStudentStatus());
                 System.out.println("과목 : " + student.getStudentSubjects());
-                System.out.println("\n수강생 목록 조회 성공!");
+                System.out.println("\n수강생 상세 목록 조회 성공!");
             } else {
                 System.out.println("고유번호를 확인해주세요.");
             }
