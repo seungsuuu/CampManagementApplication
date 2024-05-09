@@ -46,20 +46,4 @@ public class Student {
         return studentSubjects;
     }
 
-    // setter
-    public void setStudentId(String studentId) {
-        this.studentId = studentId;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public void setStudentStatus(String studentStatus) {
-        this.studentStatus = studentStatus;
-    }
-
-    public void setStudentSubjects(LinkedList<String> studentSubjects) {
-        this.studentSubjects = studentSubjects;
-    }
 }
