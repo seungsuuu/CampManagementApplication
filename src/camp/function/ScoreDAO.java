@@ -268,6 +268,12 @@ public class ScoreDAO {
                 // 해당 수강생의 해당 과목의 회차 정보를 담은 리스트
                 List<Integer> roundList = inquiryRounds(subjectID, student.getStudentId());
 
+                // 만약 회차 정보가 없으면 처음으로 돌아감
+                if (roundList.isEmpty()) {
+                    System.out.println("해당 과목의 점수가 존재하지 않습니다. 처음으로 돌아갑니다.");
+                    return;
+                }
+
                 // 수정할 회차 입력
                 int round = enterRound();
 
